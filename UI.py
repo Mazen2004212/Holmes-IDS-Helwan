@@ -294,7 +294,8 @@ def live_dashboard():
         "alerts_generated": 0,
         "interface": "",
         "interface_name": "None selected",
-        "interface_desc": ""
+        "interface_desc": "",
+        "last_error": ""
     }
 
     if app_state.live_capture_instance:
@@ -357,8 +358,12 @@ def live_start():
     )
     app_state.live_capture_instance._interface_name = iface_name
     app_state.live_capture_instance._interface_desc = iface_desc
-    app_state.live_capture_instance.start()
-    flash(f"Live capture started on: {iface_name}")
+    started = app_state.live_capture_instance.start()
+    if started:
+        flash(f"Live capture started on: {iface_name}")
+    else:
+        error = app_state.live_capture_instance.last_error or "Capture could not start."
+        flash(f"Live capture failed to start: {error}")
     return redirect("/live")
 
 

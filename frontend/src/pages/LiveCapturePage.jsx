@@ -89,6 +89,12 @@ export default function LiveCapturePage() {
                         <div className="col-md-3"><strong>Description:</strong> {status.interface_desc || '—'}</div>
                     </div>
 
+                    {status.last_error && (
+                        <div className="alert alert-danger py-2">
+                            <strong>Capture error:</strong> {status.last_error}
+                        </div>
+                    )}
+
                     <div className="d-flex gap-2 flex-wrap">
                         {!status.running ? (
                             <>

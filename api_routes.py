@@ -266,6 +266,7 @@ def live_status():
     status = {
         'running': False, 'packets_captured': 0, 'alerts_generated': 0,
         'interface': '', 'interface_name': 'None selected', 'interface_desc': '',
+        'last_error': '',
     }
     lc = app_state.live_capture_instance
     if lc:
@@ -276,6 +277,7 @@ def live_status():
             'interface': getattr(lc, 'interface', ''),
             'interface_name': getattr(lc, '_interface_name', 'Unknown'),
             'interface_desc': getattr(lc, '_interface_desc', ''),
+            'last_error': getattr(lc, 'last_error', ''),
         }
 
     interfaces = app_state.get_interfaces()
@@ -326,7 +328,13 @@ def live_start():
     )
     app_state.live_capture_instance._interface_name = iface_name
     app_state.live_capture_instance._interface_desc = iface_desc
-    app_state.live_capture_instance.start()
+    started = app_state.live_capture_instance.start()
+    if not started:
+        error = getattr(app_state.live_capture_instance, 'last_error', '') or 'Capture could not start.'
+        return jsonify({
+            'success': False,
+            'message': f'Live capture failed to start: {error}',
+        }), 500
     return jsonify({'success': True, 'message': f'Live capture started on: {iface_name}'})
 
 

@@ -47,6 +47,7 @@ class LiveCapture:
         self._running = False
         self._thread = None
         self._lock = threading.Lock()
+        self.last_error = ""
 
         # Interface display info (set by UI.py)
         self._interface_name = interface or "default"
@@ -77,6 +78,7 @@ class LiveCapture:
                 print("[LiveCapture] Already running.")
                 return False
             self._running = True
+            self.last_error = ""
             self.packets_captured = 0
             self.alerts_generated = 0
 
@@ -91,6 +93,14 @@ class LiveCapture:
         # Start batch writer thread (training data)
         self._writer_thread = threading.Thread(target=self._batch_writer_loop, daemon=True)
         self._writer_thread.start()
+
+        # Scapy raises immediately when packet capture support is unavailable
+        # (for example, missing Npcap/wpcap.dll on Windows). Surface that as a
+        # failed start instead of briefly reporting "Running" in the UI.
+        time_mod.sleep(0.2)
+        if not self._running:
+            print(f"[LiveCapture] Failed to start: {self.last_error}")
+            return False
 
         print(f"[LiveCapture] Started on interface: {self._interface_name}")
         return True
@@ -128,6 +138,7 @@ class LiveCapture:
                     timeout=2
                 )
         except Exception as e:
+            self.last_error = str(e)
             print(f"[LiveCapture ERROR] Capture failed: {e}")
             self._running = False
 
@@ -402,4 +413,5 @@ class LiveCapture:
                 "interface_name": self._interface_name,
                 "interface_desc": self._interface_desc,
                 "pending_features": self._feature_queue.qsize(),
+                "last_error": self.last_error,
             }
