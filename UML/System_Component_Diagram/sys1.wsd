@@ -1,0 +1,85 @@
+@startuml IDS_Component_Diagram
+title Intrusion Detection System - Component Diagram (NIDS)
+
+skinparam componentStyle rectangle
+skinparam backgroundColor #FAFAFA
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam shadowing true
+
+skinparam component {
+    BackgroundColor<<UI>> #FFE4E1
+    BackgroundColor<<Engine>> #E0FFFF
+    BackgroundColor<<Support>> #F5F5F5
+    BackgroundColor<<Model>> #FFFACD
+    BackgroundColor<<Storage>> #F0F8FF
+    BorderColor Black
+    FontColor Black
+}
+
+' ==== UI Layer ====
+package "Flask Web Interface" <<UI>> {
+  [UI Dashboard] <<UI>>
+  [Handle CSV Upload] <<UI>>
+  [Handle PCAP Upload] <<UI>>
+  [View Alerts] <<UI>>
+
+  [UI Dashboard] --> [Handle CSV Upload]
+  [UI Dashboard] --> [Handle PCAP Upload]
+  [UI Dashboard] --> [View Alerts]
+}
+
+' ==== Detection Engines ====
+package "Detection Engines" <<Engine>> {
+  [Anomaly-Based Detection] <<Engine>>
+  [Signature-Based Detection] <<Engine>>
+  [Feature Extractor] <<Engine>>
+  [Rule Matcher] <<Engine>>
+}
+
+' ==== ML Models ====
+package "Machine Learning Models" <<Model>> {
+  [Classifier Model] <<Model>>
+  [Isolation Forest] <<Model>>
+  [MinMax Scaler] <<Model>>
+  [Label Encoder] <<Model>>
+}
+
+' ==== Support Services ====
+package "System Services" <<Support>> {
+  [Logger] <<Support>>
+  [Alert Generator] <<Support>>
+  [Rule Manager] <<Support>>
+}
+
+' ==== Storage ====
+database "SQLite IDS Database" as DB <<Storage>>
+
+' ==== Data Flow ====
+
+' CSV Upload path
+[Handle CSV Upload] --> [Anomaly-Based Detection]
+[Anomaly-Based Detection] --> [Feature Extractor]
+[Anomaly-Based Detection] --> [Classifier Model]
+[Anomaly-Based Detection] --> [Isolation Forest]
+[Anomaly-Based Detection] --> [MinMax Scaler]
+[Anomaly-Based Detection] --> [Label Encoder]
+[Anomaly-Based Detection] --> [Logger]
+[Anomaly-Based Detection] --> [Alert Generator]
+
+' PCAP Upload path
+[Handle PCAP Upload] --> [Signature-Based Detection]
+[Signature-Based Detection] --> [Rule Matcher]
+[Rule Matcher] --> [Rule Manager]
+[Signature-Based Detection] --> [Logger]
+[Signature-Based Detection] --> [Alert Generator]
+
+' Alert Viewer access
+[View Alerts] --> DB
+
+' DB connections
+[Logger] --> DB
+[Alert Generator] --> DB
+[Rule Manager] --> DB
+
+@enduml

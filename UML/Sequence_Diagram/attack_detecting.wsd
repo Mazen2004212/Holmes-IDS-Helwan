@@ -1,0 +1,29 @@
+@startuml sequence_diagram
+
+participant IDS_app 
+participant Rule
+participant Packet
+participant Alert
+participant Log
+participant Database
+participant Traffic
+
+Traffic -> Packet: "Packet()"
+Packet -> IDS_app: "Packets"
+Rule -> IDS_app: "matches(packets)"
+
+alt Match found
+    IDS_app -> Alert: "Alert()"
+    Alert -> Database: "Add_to_Alert_Table(Alert)"
+    Database -> Alert: "Added to Alert Table Success"
+    IDS_app -> Log: "Log()"
+    Log -> Database: "Add_to_Log_Table(Log)"
+    Database -> Log: "Added to Log Table Success"
+
+else No match
+    Database -> Alert: "Error"
+    Database -> Log: "Error"
+    note right of Rule: Continue to next rule
+end
+
+@enduml

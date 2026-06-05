@@ -1,0 +1,31 @@
+@startuml
+title Activity Diagram: Signature-Based Detection from PCAP File
+
+start
+
+:Admin uploads PCAP file;
+:Read packets using Scapy;
+:Connect to Database;
+:Load rules from DB;
+
+repeat
+  :For each packet in PCAP;
+  :Create Packet object;
+  
+  repeat
+    :For each rule;
+    :Create Rule object;
+    :Check if packet matches rule;
+    
+    if (Match found?) then (yes)
+      :Display Matching in the UI;
+      :Display Stats of the File detection;
+    endif
+
+  repeat while (more rules?)
+repeat while (more packets?)
+
+:Close DB connection;
+
+stop
+@enduml

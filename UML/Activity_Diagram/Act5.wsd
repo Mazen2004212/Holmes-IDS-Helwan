@@ -1,0 +1,17 @@
+@startuml Activity_diagram
+title Activity Diagram: Adding Rules from File
+
+start
+:Admin uploads .rules file;
+:Read each line;
+:Parse rule into components;
+:Validate format;
+
+repeat
+  :For each parsed rule;
+  :Insert into DB;
+repeat while (more rules?)
+
+:Confirm successful rule Adding;
+stop
+@enduml

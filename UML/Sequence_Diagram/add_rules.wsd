@@ -1,0 +1,16 @@
+@startuml sequence_diagram
+
+actor Administrator
+participant RuleProcessor
+
+
+Administrator -> RuleProcessor : "Enter the name of the Rules file"
+RuleProcessor -> Database : "load_rules_to_db(file)"
+alt added Successfully
+    Database -> RuleProcessor : "Add Rules to Database"
+else Error
+    Database -> RuleProcessor : "Error adding Rules"
+end
+
+RuleProcessor -> Administrator : "Rules added successfully"
+@enduml

@@ -1,0 +1,23 @@
+@startuml Activity_diagram
+title Activity Diagram: Anomaly Detection from CSV Upload
+
+start
+:Upload CSV file;
+:Load model + scaler + encoder;
+:Read file into DataFrame;
+:Scale the features;
+
+repeat
+  :For each row;
+  :Apply Isolation Forest;
+  if (Anomalous?) then (yes)
+    :Mark as "Unknown Attack";
+  else
+    :Use classifier to predict;
+  endif
+repeat while (more rows?)
+
+:Update stats;
+:Display predictions + stats on UI;
+stop
+@enduml

@@ -1,0 +1,17 @@
+@startuml sequence_diagram
+title Sequence Diagram: CSV Upload Detection (Anomaly)
+
+actor Admin
+participant UI
+participant "AnomalyIDS" as AnomIDS
+database DB
+participant "Log & Alert" as LA
+
+Admin -> UI : Upload CSV file
+UI -> AnomIDS : predict_from_csv(file)
+AnomIDS -> DB : scale features
+AnomIDS -> AnomIDS : iso_model.decision_function
+AnomIDS -> AnomIDS : clf_model.predict()
+AnomIDS -> LA : classify each row
+LA -> UI : return stats + prediction[]
+@enduml

@@ -1,0 +1,15 @@
+@startuml Activity_diagram
+title Activity Diagram: System Initialization
+
+start
+:Start Flask App;
+:Connect to DB;
+:Load Signature Rules;
+:Clear old Logs/Alerts;
+
+:Launch SignatureIDS (Thread);
+:Launch AnomalyIDS (Thread);
+
+:Open UI on port 8000;
+stop
+@enduml

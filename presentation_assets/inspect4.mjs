@@ -1,0 +1,12 @@
+import * as m from 'file:///C:/Users/moham/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/@oai/artifact-tool/dist/artifact_tool.mjs';
+const p=m.Presentation.create({slideSize:{width:1920,height:1080}});
+const s=p.slides.add();
+s.compose(m.text('hello',{width:500,height:m.hug,style:{fontSize:80,color:'#000'}}),{frame:{left:0,top:0,width:1920,height:1080},baseUnit:8});
+const b=await s.export({format:'png'});
+console.log('png proto', Object.getOwnPropertyNames(Object.getPrototypeOf(b)));
+console.log('png keys', Object.keys(b));
+console.log('type', b.type, 'size', b.size);
+console.log('has save', typeof b.save, 'arrayBuffer', typeof b.arrayBuffer);
+const ppt=await m.PresentationFile.exportPptx(p);
+console.log('ppt proto', Object.getOwnPropertyNames(Object.getPrototypeOf(ppt)));
+console.log('ppt type', ppt.type, ppt.size, typeof ppt.save, typeof ppt.arrayBuffer);

@@ -1,0 +1,23 @@
+@startuml sequence_diagram
+
+Actor Admin
+participant IDS_app 
+participant Rule
+participant Database
+
+Rule -> Database:  "get_rules_from_db()"
+
+alt Rule found
+    Database -> Rule: "Rules"
+    Rule -> IDS_app: "Rules"
+    IDS_app -> Admin: "Rules"
+
+else No Rule
+    
+    Database -> Rule: "Error"
+    Rule -> Admin: "Error"
+
+end
+
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml sequence_diagram
+title Sequence Diagram: Signature-based Detection
+
+actor Admin
+participant UI
+participant "SignatureIDS" as SigIDS
+participant "Rule" as Rule
+participant "Packet" as Packet
+database "DB" as DB
+participant "Log & Alert" as LA
+
+Admin -> UI : Capture Packets
+UI -> SigIDS : detect(packets)
+SigIDS -> Packet : wrap packet
+loop for each rule
+  SigIDS -> Rule : match_rule(packet)
+  alt matched
+    SigIDS -> LA : create log/alert
+    LA -> DB : add_to_log_table(conn)
+    LA -> DB : add_to_alert_table(conn)
+  end
+end
+@enduml

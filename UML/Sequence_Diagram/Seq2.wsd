@@ -1,0 +1,17 @@
+@startuml sequen
+title Sequence Diagram: System Initialization
+
+actor Admin
+participant UI
+participant "Database" as DB
+participant "Rule" as Rule
+participant "SignatureIDS" as SigIDS
+participant "AnomalyIDS" as AnomIDS
+
+Admin -> UI : Run IDS Application
+UI -> DB : connect()
+UI -> DB : clear_table('logs') + clear_table('alerts')
+UI -> Rule : get_rules_from_db(conn)
+UI -> SigIDS : new SignatureIDS(rules)
+UI -> AnomIDS : new AnomalyIDS(model, iso_model, ...)
+@enduml

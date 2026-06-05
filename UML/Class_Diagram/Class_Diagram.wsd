@@ -1,0 +1,188 @@
+@startuml class_diagram
+title Network Intrusion Detection System (NIDS) Class Diagram
+
+skinparam style strictuml
+skinparam backgroundColor #FAFAFA
+skinparam classBackgroundColor white
+skinparam classBorderColor black
+skinparam classFontColor black
+skinparam shadowing true
+skinparam dpi 150
+skinparam ArrowColor DarkSlateGray
+skinparam linetype ortho
+skinparam defaultTextAlignment center
+
+' ======== Classes ========
+
+class Packet <<(L,#FDF5E6)>> {
+  - scapy_packet
+  - protocol: str
+  - src_ip: str
+  - dst_ip: str
+  - src_port: str
+  - dst_port: str
+  - flags: str
+  - data_size: int
+  - payload: str
+  - time: float
+  - time_formatted: str
+  --
+  + __init__(scapy_packet)
+  + extract_protocol(): str
+  + extract_payload(): str
+  + extract_flags(): str
+  + get_packet_time_formatted(): str
+  + get_src_ip(): str
+  + get_dst_ip(): str
+  + get_src_port(): str
+  + get_dst_port(): str
+  + get_key(key: str): str
+  + get_window_size(): int
+  + get_header_length(): int
+  + get_payload_length(): int
+  + get_pkt_size(): int
+  + get_itype(): int
+  + get_src_counts(): dict
+  + get_dst_counts(): dict
+}
+
+class Flow <<(L,#FDF5E6)>> {
+  - packet_list: list
+  - flows: dict
+  --
+  + group_into_flows(packet_list: list): dict
+  + compute_features(flow_packets: list): list
+  + get_flow_key(pkt: Packet): tuple
+}
+
+class Rule <<(R,#FFF5E1)>> {
+  - action: str
+  - protocol: str
+  - src_ip: str
+  - dst_ip: str
+  - src_port: str
+  - dst_port: str
+  - direction: str
+  - options: dict
+  --
+  + match_rule(packet: Packet): bool
+  + matches(packet: Packet): bool
+}
+
+class RulesHandler <<(R,#FFF5E1)>> {
+  + extract_rules(file_path: str): list
+  + parse_rule(rule: str): dict
+  + load_rules_to_db(file_path: str, conn)
+  + get_rules_from_db(conn): list
+}
+
+class MatchEngine <<(R,#FFF5E1)>> {
+  + match_rule(packet: Packet, rule: Rule): bool
+}
+
+class SignatureIDS <<(D,#E0FFFF)>> {
+  - rules: list
+  - db_path: str
+  - max_workers: int
+  --
+  + detect(packets: list)
+  + process_packet(pkt, conn)
+}
+
+class AnomalyIDS <<(D,#D9FFF8)>> {
+  - clf_model
+  - iso_model
+  - scaler
+  - label_encoder
+  - feature_order: list
+  - db_path: str
+  - threshold: float
+  --
+  + detect(scapy_packets: list, threads: int)
+  + process_flow(flow_item: tuple, conn)
+  + predict_from_csv(path: str): tuple
+}
+
+class Log <<(S,#F5F5FF)>> {
+  - time: str
+  - action: str
+  - src_ip: str
+  - dst_ip: str
+  - message: str
+  - layer: str
+  - method: str
+  --
+  + add_to_log_table(conn)
+  + get_logs_from_db(conn): list
+}
+
+class Alert <<(S,#F5F5FF)>> {
+  - time: str
+  - src_ip: str
+  - dst_ip: str
+  - message: str
+  - layer: str
+  - method: str
+  --
+  + add_to_alert_table(conn)
+  + get_alerts_from_db(conn): list
+}
+
+class Database <<(S,#EDF9FF)>> {
+  - db_path: str
+  --
+  + connect(): Connection
+  + clear_table(name: str)
+  + create_table_rules()
+  + create_table_logs()
+  + create_table_alerts()
+}
+
+class AlertAnalyzer <<(U,#FFF0F5)>> {
+  - alerts: list
+  --
+  + get_top_src_ip(): str
+  + get_top_dst_ip(): str
+}
+
+class UI <<(U,#FFE4E1)>> {
+  + signature_dashboard()
+  + anomaly_dashboard()
+  + upload_csv()
+}
+
+' ======== Relationships ========
+
+Packet <.. Rule : uses
+Packet <.. SignatureIDS : inspects
+Packet <.. AnomalyIDS : inspects
+Flow <.. AnomalyIDS : analyzes
+
+SignatureIDS --> Rule : loads
+SignatureIDS --> Log : writes
+SignatureIDS --> Alert : generates
+SignatureIDS --> Database : connects
+
+AnomalyIDS --> Log : writes
+AnomalyIDS --> Alert : generates
+AnomalyIDS --> Database : connects
+
+UI --> SignatureIDS : controls
+UI --> AnomalyIDS : controls
+UI --> Log
+UI --> Alert
+UI --> AlertAnalyzer
+UI --> Database
+UI --> RulesHandler
+
+AlertAnalyzer --> Alert : analyzes
+
+RulesHandler --> Database : stores
+RulesHandler --> Rule : manages
+
+MatchEngine --> Rule : checks
+MatchEngine --> Packet : scans
+
+@enduml
+' ======== Notes ========
+' - Classes are grouped by their functionality: Data Handling (Packet, Flow), Detection Systems (

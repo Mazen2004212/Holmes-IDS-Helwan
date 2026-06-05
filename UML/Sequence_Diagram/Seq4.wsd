@@ -1,0 +1,29 @@
+@startuml sequence_diagram
+title Sequence Diagram: Anomaly-based Detection
+
+actor Admin
+participant UI
+participant "AnomalyIDS" as AnomIDS
+participant "Packet" as Packet
+participant "Flow" as Flow
+database "DB" as DB
+participant "Log & Alert" as LA
+
+Admin -> UI : Capture Packets
+UI -> AnomIDS : detect(packets)
+AnomIDS -> Packet : wrap packet
+AnomIDS -> Flow : group_into_flows()
+loop for each flow
+  AnomIDS -> Flow : compute_features()
+  AnomIDS -> AnomIDS : scale + iso_model.decision_function
+  alt anomaly < threshold
+    AnomIDS -> LA : create alert (Unknown Attack)
+  else
+    AnomIDS -> AnomIDS : predict label (clf_model)
+    alt label != "BENIGN"
+      AnomIDS -> LA : create alert
+    end
+  end
+  LA -> DB : save log/alert
+end
+@enduml

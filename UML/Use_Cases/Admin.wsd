@@ -1,0 +1,37 @@
+@startuml  use_case_diagram
+
+left to right direction
+skinparam packageStyle rectangle
+
+skinparam usecase {
+  BackgroundColor #F4F6F7
+  BorderColor Black
+  ArrowColor #5D6D7E
+  FontName "Arial"
+  FontSize 14
+  ActorBorderColor Black
+  ActorBackgroundColor #D5F5E3
+  ActorFontColor Black
+}
+
+actor "Admin" as AdminActor #palegreen
+rectangle "IDS UI" {
+  usecase UC1 as "Upload PCAP File"
+  usecase UC2 as "Upload Rule File"
+  usecase UC3 as "View Signature Alerts"
+  usecase UC4 as "Clear Logs & Alerts"
+  usecase UC5 as "Upload CSV File"
+  usecase UC6 as "View Anomaly Alerts"
+  usecase UC7 as "View Alert Statistics"
+}
+
+
+AdminActor --> UC1 : "Uploads traffic file"
+AdminActor --> UC2 : "Uploads rules file"
+AdminActor --> UC3 : "Views signature alerts"
+AdminActor --> UC4 : "Deletes old logs/alerts"
+AdminActor --> UC5 : "Uploads CSV traffic"
+AdminActor --> UC6 : "Views anomaly alerts"
+AdminActor --> UC7 : "Views alert statistics"
+
+@enduml

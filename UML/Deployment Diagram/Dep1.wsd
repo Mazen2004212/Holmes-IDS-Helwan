@@ -1,0 +1,28 @@
+@startuml
+start
+
+:Extract packet features;
+:Preprocess & Scale input;
+
+partition "Isolation Forest" {
+    :Check with Isolation Forest;
+    if ("Is Anomalous?") then (yes)
+        --> :[True] Label as Unknown Attack;
+        
+    else (no)
+        partition "Stacked Model" {
+            :Predict label using Stacking Classifier;
+            if ("Is label != BENIGN?") then (yes)
+                --> :Label as Known Attack;
+            else (no)
+                --> :Label as BENIGN;
+            endif
+        }
+    endif
+}
+
+label Log
+:Log result + Raise Alert;
+
+stop
+@enduml

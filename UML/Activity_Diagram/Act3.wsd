@@ -1,0 +1,33 @@
+@startuml activity_diagram
+title Activity Diagram: Real-Time Signature + Anomaly Detection
+
+start
+:Capture packets live;
+:Group packets into flows;
+
+fork
+  :Run SignatureIDS;
+  repeat
+    :For each packet;
+    :Apply rules;
+    if (Match?) then (yes)
+      :Log + Alert;
+    endif
+  repeat while (more packets?)
+end fork
+
+fork
+  :Run AnomalyIDS;
+  repeat
+    :For each flow;
+    :Extract features;
+    :Scale + Predict;
+    if (Attack?) then (yes)
+      :Log + Alert;
+    endif
+  repeat while (more flows?)
+end fork
+
+:Show live alerts on UI;
+stop
+@enduml

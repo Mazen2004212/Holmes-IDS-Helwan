@@ -1,0 +1,16 @@
+@startuml sequence_diagram
+title Sequence Diagram: Web UI View for Logs/Alerts
+
+actor Admin
+participant UI
+database DB
+participant AlertAnalyzer
+
+Admin -> UI : Access /anomaly or /signature
+UI -> DB : get_alerts_from_db(method="anomaly" or "signature")
+UI -> DB : get_logs_from_db(method="anomaly" or "signature")
+UI -> AlertAnalyzer : analyze alerts
+AlertAnalyzer -> UI : get_top_src_ip()
+AlertAnalyzer -> UI : get_top_dst_ip()
+UI -> Admin : render HTML view
+@enduml

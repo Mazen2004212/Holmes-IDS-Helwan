@@ -1,0 +1,45 @@
+.navbar {
+    background: linear-gradient(to right, #141e30, #243b55);
+    transition: all 0.4s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffc107 !important;
+    transform: translateY(-2px);
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28 255, 255, 255, 0.7 %29)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+.flying-logo {
+    height: 50px;
+    margin-right: 10px;
+    opacity: 0;
+    animation: flyToTitle 2s ease-out forwards;
+    position: relative;
+}
+
+@keyframes flyToTitle {
+    0% {
+        transform: translateX(-120px) translateY(-20px) rotate(-20deg);
+        opacity: 0;
+    }
+    60% {
+        transform: translateX(15px) translateY(5px) rotate(5deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateX(0) translateY(0) rotate(0);
+        opacity: 1;
+    }
+}

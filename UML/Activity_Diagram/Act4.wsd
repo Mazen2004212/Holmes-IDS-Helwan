@@ -1,0 +1,13 @@
+@startuml Activity_diagram
+title Activity Diagram: Alert Analyzer Dashboard
+
+start
+:Open dashboard page;
+:Connect to DB;
+:Get all alerts;
+:Group by source/destination IP;
+:Find top talkers;
+
+:Render data on dashboard;
+stop
+@enduml

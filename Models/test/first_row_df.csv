@@ -1,0 +1,2 @@
+FwdPacketLengthMean,FwdPacketLengthMax,FlowIATMax,SubflowBwdBytes,Init_Win_bytes_backward,TotalLengthofBwdPackets,FlowPackets/s,TotalLengthofFwdPackets,BwdPackets/s,AveragePacketSize,FlowDuration,BwdPacketLengthMean,SubflowFwdBytes,AvgBwdSegmentSize,FwdPacketLengthStd,AvgFwdSegmentSize,DestinationPort,BwdHeaderLength,PacketLengthMean,BwdPacketLengthStd
+0.0,0.0,0.0494158504117987,0.0,0.4419097900390625,0.0,2.19244006555076e-07,0.0,8.4306199e-08,0.0,0.0494232397988397,0.0,0.0,0.0,0.0,0.0,0.0012207776353537,0.0003619516432604,0.0,0.0

@@ -1,0 +1,5 @@
+/* HOLMES IDS — Combined custom styles */
+/* Imports copies of the original Flask static CSS files */
+@import './style.css';
+@import './navbar.css';
+@import './footer.css';

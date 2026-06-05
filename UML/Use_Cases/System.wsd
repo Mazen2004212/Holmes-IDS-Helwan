@@ -1,0 +1,49 @@
+@startuml  use_case_diagram
+
+left to right direction
+skinparam packageStyle rectangle
+
+skinparam usecase {
+  BackgroundColor #F4F6F7
+  BorderColor Black
+  ArrowColor #5D6D7E
+  FontName "Arial"
+  FontSize 14
+  ActorBorderColor Black
+  ActorBackgroundColor #D5F5E3
+  ActorFontColor Black
+}
+
+actor "System" as SystemActor #lightblue
+
+rectangle "Shared Operations" {
+  usecase UC1 as "Analyze Alerts"
+  usecase UC2 as "Analyze Top Src_IPs"
+  usecase UC3 as "Analyze Top Dst_IPs"
+}
+
+rectangle "Signature-based IDS" {
+  usecase UC4 as "Parse & Store Rules"
+  usecase UC5 as "Start Signature Detection"
+  usecase UC6 as "Generate Logs"
+  usecase UC7 as "Generate Alerts"
+}
+
+rectangle "Anomaly-based IDS" {
+  usecase UC8 as "Start Anomaly Detection"
+  usecase UC9 as "Generate Logs"
+  usecase UC10 as "Generate Alerts"
+}
+
+SystemActor --> UC1 : "Analyzes alerts"
+SystemActor --> UC2 : "Analyzes top source IPs"
+SystemActor --> UC3 : "Analyzes top destination IPs"
+SystemActor --> UC4 : "Parses and stores rules"
+SystemActor --> UC5 : "Starts signature detection"
+SystemActor --> UC6 : "Logs events"
+SystemActor --> UC7 : "Triggers alerts"
+SystemActor --> UC8 : "Starts anomaly detection"
+SystemActor --> UC9 : "Logs anomalies"
+SystemActor --> UC10 : "Triggers anomaly alerts"
+
+@enduml

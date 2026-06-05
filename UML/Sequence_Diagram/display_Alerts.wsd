@@ -1,0 +1,23 @@
+@startuml sequence_diagram
+
+Actor Admin
+participant IDS_app 
+participant Alert
+participant Database
+
+Alert -> Database:  "get_alerts_from_db()"
+
+alt Alert found
+    Database -> Alert: "Alerts"
+    Alert -> IDS_app: "Alerts"
+    IDS_app -> Admin: "Alerts"
+
+else No Alert
+    
+    Database -> Alert: "Error"
+    Alert -> Admin: "Error"
+
+end
+
+
+@enduml

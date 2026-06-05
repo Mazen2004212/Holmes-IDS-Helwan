@@ -1,0 +1,41 @@
+@startuml sequence_diagram
+title Sequence Diagram: Upload PCAP File (Signature-Based Detection)
+
+actor Admin
+participant UI
+participant "SignatureIDS" as SigIDS
+participant "Packet" as Pkt
+participant "Rule" as Rule
+participant "MatchEngine" as Engine
+participant "Log & Alert" as LA
+database DB
+
+== Upload and Start Detection ==
+
+Admin -> UI : Upload PCAP file
+UI -> DB : connect()
+UI -> SigIDS : detect(packets)
+
+== Iterate Over Packets ==
+
+loop for each packet
+    SigIDS -> Pkt : Packet(pkt)
+    SigIDS -> DB : reuse conn
+
+    loop for each rule
+        SigIDS -> Rule : Rule(rule)
+        SigIDS -> Engine : match_rule(packet, rule)
+        alt if matched
+            SigIDS -> LA : create Log + Alert
+            LA -> DB : add_to_log_table()
+            LA -> DB : add_to_alert_table()
+        end
+    end
+end
+
+== End Detection ==
+
+SigIDS --> UI : Detection Done (signature method)
+UI -> Admin : Show logs + alerts (signature only)
+
+@enduml
