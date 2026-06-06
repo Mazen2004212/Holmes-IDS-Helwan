@@ -12,6 +12,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 
 from DB import Database
 from rule import Rule
+from RuleProcessor import seed_default_rules_if_empty
 from log import Log
 from alert import Alert
 from signature_IDS import SignatureIDS
@@ -741,6 +742,11 @@ if __name__ == "__main__":
         db.create_table_alert_features()
         db.create_table_training_data()
         db.create_table_retrain_jobs()
+
+        # Fresh clones do not include DB/IDS.db, so seed bundled signature rules once.
+        seeded_rules = seed_default_rules_if_empty(conn)
+        if seeded_rules:
+            print(f"[Rules] Seeded {seeded_rules} default signature rules.")
 
         # Create default admin user
         User.ensure_default_admin(conn)

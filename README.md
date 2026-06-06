@@ -129,6 +129,7 @@ IDS-Grad-Helwan/
 │   ├── src/pages/              # Main application pages
 │   └── vite.config.js          # Dev server and API proxy config
 ├── tests/                      # pytest test suite
+├── Rules/                      # Bundled default signature rules for fresh databases
 ├── UI.py                       # Flask backend entry point
 ├── api_auth.py                 # Auth API routes
 ├── api_routes.py               # Main JSON API routes
@@ -154,13 +155,14 @@ IDS-Grad-Helwan/
 
 1. `UI.py` starts Flask, loads the trained models, scaler, label encoder, and feature order.
 2. `DB.py` opens `DB/IDS.db` and creates missing tables.
-3. `auth.py` creates the default `admin/admin` user if no users exist.
-4. The React frontend calls Flask through `/api/*`.
-5. Signature detection uses `signature_IDS.py`, `rule.py`, and `packet.py`.
-6. Anomaly detection uses `anomaly_IDS.py`, `flow.py`, the scaler, the Isolation Forest, the stacking classifier, and the label encoder.
-7. Live capture uses `live_capture.py` to sniff packets, build flows, run signature checks, run anomaly checks, and store alerts/logs in SQLite.
-8. Explainability uses `explainability.py` to generate SHAP/LIME details for stored anomaly alert features.
-9. Continual learning uses `continual_learning.py` to store flow samples, accept human labels, retrain candidate models, evaluate them, and promote/rollback models.
+3. If the `rules` table is empty, `RuleProcessor.py` loads bundled rules from `Rules/default_rules.json`.
+4. `auth.py` creates the default `admin/admin` user if no users exist.
+5. The React frontend calls Flask through `/api/*`.
+6. Signature detection uses `signature_IDS.py`, `rule.py`, and `packet.py`.
+7. Anomaly detection uses `anomaly_IDS.py`, `flow.py`, the scaler, the Isolation Forest, the stacking classifier, and the label encoder.
+8. Live capture uses `live_capture.py` to sniff packets, build flows, run signature checks, run anomaly checks, and store alerts/logs in SQLite.
+9. Explainability uses `explainability.py` to generate SHAP/LIME details for stored anomaly alert features.
+10. Continual learning uses `continual_learning.py` to store flow samples, accept human labels, retrain candidate models, evaluate them, and promote/rollback models.
 
 ## Database
 
@@ -179,6 +181,14 @@ It is generated locally on first backend startup. The following runtime tables a
 - `alert_features`
 - `training_data`
 - `retrain_jobs`
+
+The runtime database is not committed, but the default signature rules are committed in:
+
+```text
+Rules/default_rules.json
+```
+
+On first backend startup, those rules are inserted automatically if the `rules` table is empty. This allows signature-based detection, PCAP signature analysis, and live capture to work immediately after a fresh clone.
 
 ## Default Ports
 

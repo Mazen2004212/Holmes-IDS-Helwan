@@ -2,6 +2,8 @@ import json
 import sqlite3
 from DB import Database
 
+DEFAULT_RULES_PATH = "Rules/default_rules.json"
+
 def extract_rules(file_path):
         rules = []
         current_rule = ""
@@ -120,6 +122,55 @@ def load_rules_to_db(file_path, conn):
     conn.commit()
     
     print(f"Inserted {len(rules)} rules into the database.")
+
+def load_json_rules_to_db(file_path, conn):
+    """Load already-parsed signature rules from a JSON seed file."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        rules = json.load(f)
+
+    cursor = conn.cursor()
+    for rule in rules:
+        cursor.execute(
+            """
+            INSERT INTO rules
+            (
+                action,
+                protocol,
+                src_ip,
+                src_port,
+                direction,
+                dst_ip,
+                dst_port,
+                options
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                rule["action"],
+                rule["protocol"],
+                rule["src_ip"],
+                rule["src_port"],
+                rule["direction"],
+                rule["dst_ip"],
+                rule["dst_port"],
+                json.dumps(rule.get("options", {}))
+            )
+        )
+
+    conn.commit()
+    print(f"Inserted {len(rules)} JSON seed rules into the database.")
+
+def seed_default_rules_if_empty(conn, file_path=DEFAULT_RULES_PATH):
+    """Populate a fresh database with bundled signature rules."""
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM rules")
+    count = cursor.fetchone()[0]
+    if count > 0:
+        return 0
+
+    load_json_rules_to_db(file_path, conn)
+    cursor.execute("SELECT COUNT(*) FROM rules")
+    return cursor.fetchone()[0]
 
 def get_rules_from_db(conn):
     

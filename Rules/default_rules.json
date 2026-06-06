@@ -1,0 +1,1204 @@
+[
+  {
+    "action": "alert",
+    "protocol": "icmp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "ET Potential ICMP Destination Unreachable Flood",
+      "itype": 3,
+      "detection_filter": "track_by_src",
+      "threshold": 1000,
+      "seconds": "10",
+      "attack": "Network Layer Attack",
+      "sid": "100000",
+      "rev": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "icmp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "ET Potential ICMP Ping Flood",
+      "itype": 8,
+      "detection_filter": "track_by_src",
+      "threshold": 1000,
+      "seconds": "10",
+      "attack": "Network Layer Attack",
+      "sid": "100000",
+      "rev": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "icmp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "ET Potential ICMP Time Exceeded Flood",
+      "itype": 11,
+      "detection_filter": "track_by_src",
+      "threshold": 1000,
+      "seconds": "10",
+      "attack": "Network Layer Attack",
+      "sid": "100000",
+      "rev": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "ET DOS Potential Tsunami SYN Flood Denial Of Service Attempt",
+      "detection_filter": "track_by_src",
+      "flags": "S",
+      "dsize": 100,
+      "threshold": 100,
+      "seconds": "20",
+      "attack": "Application Layer Attack",
+      "sid": "1000001",
+      "rev": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "ip",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "ET DOS Potential IP Fragmented Flood",
+      "flags": "MF",
+      "detection_filter": "track_by_src",
+      "threshold": 100,
+      "seconds": "20",
+      "attack": "Network Layer Attack",
+      "sid": "1000001",
+      "rev": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "arp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "ET Potential ARP Spoofing",
+      "detection_filter": "track_by_dst",
+      "threshold": 5,
+      "seconds": "20",
+      "attack": "Network Layer Attack",
+      "sid": "1000001",
+      "rev": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "ET Potential Session Fixation Attack - Session ID in URL",
+      "content": "?",
+      "detection_filter": "track_by_src",
+      "threshold": 1,
+      "seconds": "30",
+      "attack": "Application-Layer-attack",
+      "pcre": "/(?i)(sessionid|sid|phpsessid|jsessionid|asp.net_sessionid)=[a-f0-9]{20,}/",
+      "sid": "1000001",
+      "rev": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "ET DOS Potential Slowloris Denial of Service Attack",
+      "content": "!\\r\\n\\r\\n",
+      "flags": "AP",
+      "dsize": 100,
+      "detection_filter": "track_by_src",
+      "threshold": 100,
+      "seconds": "20",
+      "attack": "Application Layer Attack",
+      "sid": "1000001",
+      "rev": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Tautology Attack Detected",
+      "content": "OR '1'='1",
+      "sid": "1"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Tautology Attack Detected",
+      "content": "OR 1=1",
+      "sid": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Tautology Attack Detected",
+      "content": "OR 'a'='a",
+      "sid": "3"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Tautology Attack Detected",
+      "content": "OR 2>1",
+      "sid": "4"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Tautology Attack Detected",
+      "content": "' OR '1'='1'--",
+      "sid": "5"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Tautology Attack Detected",
+      "content": "OR 'x'='x",
+      "sid": "6"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Union Attack Detected",
+      "content": "UNION SELECT",
+      "sid": "7"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Union Attack Detected",
+      "content": "UNION ALL SELECT",
+      "sid": "8"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Union Attack Detected",
+      "content": "UNION SELECT NULL, NULL",
+      "sid": "9"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Union Attack Detected",
+      "content": "UNION SELECT username, password FROM users",
+      "sid": "10"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Error-Based Attack Detected",
+      "content": "CONVERT(",
+      "sid": "11"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Error-Based Attack Detected",
+      "content": "@@version",
+      "sid": "12"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Error-Based Attack Detected",
+      "content": "CAST('abc' AS INT)",
+      "sid": "14"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Error-Based Attack Detected",
+      "content": "AND 1=CONVERT(INT, 'test')",
+      "sid": "15"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Error-Based Attack Detected",
+      "content": "QUOTE(",
+      "sid": "16"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Comment Attack Detected",
+      "content": "; DROP TABLE users;--",
+      "sid": "19"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Time-Based Attack Detected",
+      "content": "SLEEP(",
+      "sid": "20"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Time-Based Attack Detected",
+      "content": "WAITFOR DELAY",
+      "sid": "21"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Time-Based Attack Detected",
+      "content": "pg_sleep(10)",
+      "sid": "22"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Time-Based Attack Detected",
+      "content": "AND IF(1=1, SLEEP(5), 0)",
+      "sid": "23"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Time-Based Attack Detected",
+      "content": "AND WAITFOR DELAY '0:0:10'",
+      "sid": "24"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Boolean-Based Attack Detected",
+      "content": "AND 1=1",
+      "sid": "25"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Boolean-Based Attack Detected",
+      "content": "AND 1=2",
+      "sid": "26"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Obfuscated Attack Detected",
+      "content": "AND/**/SLEEP(5)",
+      "sid": "28"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Obfuscated Attack Detected",
+      "content": "CHAR(85,78,73,79,78) SELECT",
+      "sid": "29"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Auth Bypass Detected",
+      "content": "{ \\\"username\\\": { \\\"$ne\\\": null }, \\\"password\\\": { \\\"$ne\\\": null } }",
+      "sid": "30"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Operator Attack Detected",
+      "content": "\\\"$ne\\",
+      "sid": "31"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Operator Attack Detected",
+      "content": "\\\"$gt\\",
+      "sid": "32"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Operator Attack Detected",
+      "content": "\\\"$exists\\",
+      "sid": "33"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Operator Attack Detected",
+      "content": "\\\"$lte\\",
+      "sid": "34"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Operator Attack Detected",
+      "content": "\\\"$gte\\",
+      "sid": "35"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Boolean Attack Detected",
+      "content": "\\\"$or\\",
+      "sid": "37"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Boolean Attack Detected",
+      "content": "\\\"$and\\",
+      "sid": "38"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL JavaScript Attack Detected",
+      "content": "\\\"$where\\",
+      "sid": "39"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL JavaScript Attack Detected",
+      "content": "\\\"$function\\",
+      "sid": "40"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL JavaScript Attack Detected",
+      "content": "db.collection('users').find({})",
+      "sid": "41"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Operator Attack Detected",
+      "content": "\\\"$all\\",
+      "sid": "36"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XXE Attack - External Entity Declaration",
+      "flow": "to_server,established",
+      "content": "<!ENTITY",
+      "pcre": "/<!ENTITY\\s+[^\\s]+\\s+SYSTEM\\s+[\\\"'](file|http|ftp|php|expect):/i",
+      "attack": "Application Layer Attack",
+      "sid": "01",
+      "rev": "1"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "SQLi Obfuscated Attack Detected",
+      "content": "/**/UNION/**/SELECT",
+      "sid": "27"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Regex Attack Detected",
+      "content": "\\\"$regex\\",
+      "sid": "42"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Regex Attack Detected",
+      "content": "\\\"$options\\",
+      "sid": "43"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Regex Attack Detected",
+      "content": "/^.*$/",
+      "sid": "44"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Array Attack Detected",
+      "content": "\\\"$in\\",
+      "sid": "45"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "NoSQL Array Attack Detected",
+      "content": "\\\"$nin\\",
+      "sid": "46"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "Command Injection Detected",
+      "content": "; ls -la",
+      "sid": "47"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "Command Injection Detected",
+      "content": "| cat /etc/passwd",
+      "sid": "48"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XXE Attack - Local File Inclusion file://",
+      "flow": "to_server,established",
+      "content": "<!ENTITY",
+      "attack": "Application Layer Attack",
+      "sid": "03",
+      "rev": "1"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XXE Attack - Local File Inclusion file://",
+      "flow": "to_server,established",
+      "content": "file://",
+      "attack": "Application Layer Attack",
+      "sid": "03",
+      "rev": "1"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: Script Tag Detected",
+      "content": "<script>",
+      "sid": "1"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: JavaScript Event Handler Detected",
+      "content": "onload=",
+      "sid": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: JavaScript Event Handler Detected",
+      "content": "onerror=",
+      "sid": "3"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: JavaScript Event Handler Detected",
+      "content": "onclick=",
+      "sid": "4"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: Encoded Payload Detected",
+      "content": "%3Cscript%3E",
+      "sid": "11"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: Encoded Payload Detected",
+      "content": "&#x3C",
+      "sid": "12"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: DOM Manipulation Detected",
+      "content": "innerHTML=",
+      "sid": "14"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: Malicious URL Detected",
+      "content": "javascript:",
+      "sid": "15"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: Malicious URL Detected",
+      "content": "data:text/html",
+      "sid": "16"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: Malicious Form Input Detected",
+      "content": "<input",
+      "sid": "22"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: Malicious Form Input Detected",
+      "content": "<textarea",
+      "sid": "23"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: Obfuscated Payload Detected",
+      "pcre": "/<script.*>/i",
+      "sid": "20"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "XSS Attempt: Obfuscated Payload Detected",
+      "pcre": "/eval\\(.*\\)/i",
+      "sid": "21"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "WannaCry Ransomware Note Detected",
+      "content": "WannaDecryptor!",
+      "classtype": "trojan-activity",
+      "sid": "02",
+      "rev": "1"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "udp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "53",
+    "options": {
+      "msg": "WannaCry - Kill Switch Domain DNS Request",
+      "content": "iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com",
+      "classtype": "trojan-activity",
+      "sid": "04"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "445",
+    "options": {
+      "msg": "WannaCry - Ransom Note Transmission Detected",
+      "flow": "to_server,established",
+      "content": "@WanaDecryptor@",
+      "classtype": "ransomware-activity",
+      "sid": "05"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "445",
+    "options": {
+      "msg": "WannaCry - Ransom Note Transmission Detected",
+      "flow": "to_server,established",
+      "content": ".WNCRY",
+      "classtype": "ransomware-activity",
+      "sid": "05"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "WannaCry - Outbound Bitcoin Wallet Connection",
+      "flow": "to_server,established",
+      "content": "1Mz7153HMuxXTuR2R1t78mGSdzaAtNbBWX",
+      "classtype": "suspicious-traffic",
+      "sid": "06"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "http",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "WannaCry - HTTP Exploit Kit Detected",
+      "content": "/mssecsvc.exe",
+      "classtype": "web-application-attack",
+      "sid": "08"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "25",
+    "options": {
+      "msg": "WannaCry - Malicious Email Attachment Detected",
+      "flow": "to_server,established",
+      "content": ".zip",
+      "classtype": "trojan-activity",
+      "sid": "09"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "25",
+    "options": {
+      "msg": "WannaCry - Malicious Email Attachment Detected",
+      "flow": "to_server,established",
+      "content": ".exe",
+      "classtype": "trojan-activity",
+      "sid": "09"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "tcp",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "80",
+    "options": {
+      "msg": "WannaCry Payload Download Request",
+      "content": "/wncry@",
+      "classtype": "trojan-activity",
+      "sid": "10"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "ip",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "Possible Teardrop Attack - Overlapping IP Fragment with AAAA",
+      "flag": "MF",
+      "offset": "5",
+      "detection_filter": "track_by_dst",
+      "threshold": 10,
+      "seconds": "5",
+      "content": "AAAAAAAA",
+      "dsize": 1480,
+      "sid": "100002",
+      "rev": "2"
+    }
+  },
+  {
+    "action": "alert",
+    "protocol": "ip",
+    "src_ip": "any",
+    "src_port": "any",
+    "direction": "->",
+    "dst_ip": "any",
+    "dst_port": "any",
+    "options": {
+      "msg": "Possible Teardrop Attack - Overlapping IP Fragment with zeros",
+      "flag": "MF",
+      "offset": "5",
+      "detection_filter": "track_by_dst",
+      "threshold": 10,
+      "seconds": "5",
+      "content": "0000000",
+      "dsize": 1480,
+      "sid": "100002",
+      "rev": "2"
+    }
+  }
+]
