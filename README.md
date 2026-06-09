@@ -6,39 +6,39 @@ HOLMES IDS is a hybrid Intrusion Detection System that combines signature-based 
 
 ## Main Features
 
-- Signature-based IDS using custom rules for known attack patterns.
-- Anomaly-based IDS using a trained stacking classifier and Isolation Forest.
-- Live capture with Scapy, selectable network interface, signature checks, and flow-based anomaly detection.
-- CSV upload for batch anomaly prediction.
-- PCAP upload for signature detection and optional TLS analysis through `tshark`.
-- SHAP/LIME explainability for anomaly alerts.
-- Continual learning dashboard for reviewing captured samples, relabeling, retraining, and model promotion.
-- Analytics query builder for alerts, logs, rules, users, and training data.
-- React + Vite frontend with Flask JSON API backend.
-- Authentication and role-based access control.
+* Signature-based IDS using custom rules for known attack patterns.
+* Anomaly-based IDS using a trained stacking classifier and Isolation Forest.
+* Live capture with Scapy, selectable network interface, signature checks, and flow-based anomaly detection.
+* CSV upload for batch anomaly prediction.
+* PCAP upload for signature detection and optional TLS analysis through `tshark`.
+* SHAP/LIME explainability for anomaly alerts.
+* Continual learning dashboard for reviewing captured samples, relabeling, retraining, and model promotion.
+* Analytics query builder for alerts, logs, rules, users, and training data.
+* React + Vite frontend with Flask JSON API backend.
+* Authentication and role-based access control.
 
 ## Fresh Clone Quick Start
 
 These steps are for a new user downloading the project from GitHub.
 
-### Requirements
+## Requirements
 
 Install these first:
 
-- Python 3.10 recommended
-- Node.js 18 or newer
-- npm
-- Npcap on Windows, or libpcap on Linux, for live capture
-- Wireshark/tshark only if TLS decryption features are needed
+* Python 3.10 recommended
+* Node.js 18 or newer
+* npm
+* Npcap on Windows, or libpcap on Linux, for live capture
+* Wireshark/tshark only if TLS decryption features are needed
 
-### 1. Clone The Repository
+## 1. Clone The Repository
 
 ```powershell
-git clone https://github.com/mohameddahmedd/IDS-Grad-Helwan.git
-cd IDS-Grad-Helwan
+git clone https://github.com/Mazen2004212/Holmes-IDS-Helwan.git
+cd Holmes-IDS-Helwan
 ```
 
-### 2. Create And Activate Python Virtual Environment
+## 2. Create And Activate Python Virtual Environment
 
 ```powershell
 python -m venv .venv
@@ -52,14 +52,14 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 .\.venv\Scripts\activate
 ```
 
-### 3. Install Backend Requirements
+## 3. Install Backend Requirements
 
 ```powershell
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 4. Start The Backend
+## 4. Start The Backend
 
 ```powershell
 python UI.py
@@ -80,12 +80,12 @@ username: admin
 password: admin
 ```
 
-### 5. Start The Frontend
+## 5. Start The Frontend
 
-Open a second terminal:
+Open a second terminal from the project root:
 
 ```powershell
-cd IDS-Grad-Helwan\frontend
+cd frontend
 npm install
 npm run dev
 ```
@@ -112,12 +112,12 @@ Using a virtual environment is safer because this project depends on specific ve
 ## Project Structure
 
 ```text
-IDS-Grad-Helwan/
+Holmes-IDS-Helwan/
 ├── DB/                         # Runtime SQLite database folder
 ├── Models/                     # Trained models, scaler, encoders, feature order, datasets
-│   ├── Models/                 # tst1_stk_classifier.joblib, isolation_forest.joblib, dnn model
-│   ├── Scaler/                 # MinMax scaler
-│   ├── Label Encoder/          # Label encoders
+│   ├── Models/                 # Trained ML models such as stacking classifier and Isolation Forest
+│   ├── Scaler/                 # MinMax scaler used by the ML pipeline
+│   ├── Label Encoder/          # Label encoders used for prediction labels
 │   ├── Features_Order/         # Feature order used by the ML pipeline
 │   ├── Dt/                     # CIC-IDS-2017 dataset files used by evaluation/retraining
 │   ├── ML/                     # Additional model/training files
@@ -130,12 +130,15 @@ IDS-Grad-Helwan/
 │   └── vite.config.js          # Dev server and API proxy config
 ├── tests/                      # pytest test suite
 ├── Rules/                      # Bundled default signature rules for fresh databases
+├── uploads/                    # Runtime upload folder
+├── tools/                      # Utility scripts
+├── UML/                        # UML diagrams and design assets
 ├── UI.py                       # Flask backend entry point
-├── api_auth.py                 # Auth API routes
+├── api_auth.py                 # Authentication API routes
 ├── api_routes.py               # Main JSON API routes
-├── app_state.py                # Shared app paths, model state, runtime state
+├── app_state.py                # Shared app paths, model state, and runtime state
 ├── DB.py                       # SQLite connection and table creation
-├── auth.py                     # Users, roles, password hashing, access control
+├── auth.py                     # Users, roles, password hashing, and access control
 ├── signature_IDS.py            # Signature detection engine
 ├── anomaly_IDS.py              # ML anomaly detection engine
 ├── live_capture.py             # Live packet capture and detection loop
@@ -144,16 +147,20 @@ IDS-Grad-Helwan/
 ├── rule.py                     # Signature rule object and matching logic
 ├── RuleProcessor.py            # Rule loading/parsing helper
 ├── explainability.py           # SHAP/LIME alert explanations
-├── continual_learning.py       # Relabeling, retraining, promotion, rollback
+├── continual_learning.py       # Relabeling, retraining, promotion, and rollback
 ├── analytics.py                # Analytics query builder engine
 ├── tls_decrypt.py              # TLS metadata/decryption helper using tshark
 ├── requirements.txt            # Python dependencies
-└── start_backend.bat           # Windows backend launcher
+├── requirements-runtime.txt    # Runtime dependency list
+├── package-lock.json           # Root package lock if used by tools
+├── skills-lock.json            # Installed AI agent skills lock file
+├── start_backend.bat           # Windows backend launcher
+└── start_frontend.bat          # Windows frontend launcher
 ```
 
 ## Backend Data Flow
 
-1. `UI.py` starts Flask, loads the trained models, scaler, label encoder, and feature order.
+1. `UI.py` starts Flask and loads the trained models, scaler, label encoder, and feature order.
 2. `DB.py` opens `DB/IDS.db` and creates missing tables.
 3. If the `rules` table is empty, `RuleProcessor.py` loads bundled rules from `Rules/default_rules.json`.
 4. `auth.py` creates the default `admin/admin` user if no users exist.
@@ -162,7 +169,7 @@ IDS-Grad-Helwan/
 7. Anomaly detection uses `anomaly_IDS.py`, `flow.py`, the scaler, the Isolation Forest, the stacking classifier, and the label encoder.
 8. Live capture uses `live_capture.py` to sniff packets, build flows, run signature checks, run anomaly checks, and store alerts/logs in SQLite.
 9. Explainability uses `explainability.py` to generate SHAP/LIME details for stored anomaly alert features.
-10. Continual learning uses `continual_learning.py` to store flow samples, accept human labels, retrain candidate models, evaluate them, and promote/rollback models.
+10. Continual learning uses `continual_learning.py` to store flow samples, accept human labels, retrain candidate models, evaluate them, and promote or rollback models.
 
 ## Database
 
@@ -174,13 +181,13 @@ DB/IDS.db
 
 It is generated locally on first backend startup. The following runtime tables are created automatically:
 
-- `rules`
-- `logs`
-- `alerts`
-- `users`
-- `alert_features`
-- `training_data`
-- `retrain_jobs`
+* `rules`
+* `logs`
+* `alerts`
+* `users`
+* `alert_features`
+* `training_data`
+* `retrain_jobs`
 
 The runtime database is not committed, but the default signature rules are committed in:
 
@@ -188,7 +195,7 @@ The runtime database is not committed, but the default signature rules are commi
 Rules/default_rules.json
 ```
 
-On first backend startup, those rules are inserted automatically if the `rules` table is empty. This allows signature-based detection, PCAP signature analysis, and live capture to work immediately after a fresh clone.
+On first backend startup, those rules are inserted automatically if the `rules` table is empty. This allows signature-based detection, PCAP signature analysis, and live capture to work after a fresh clone.
 
 ## Default Ports
 
@@ -205,9 +212,155 @@ Activate the virtual environment first, then run:
 python -m pytest tests -v
 ```
 
+## Windows Batch Launchers
+
+The project includes Windows launcher files:
+
+```text
+start_backend.bat
+start_frontend.bat
+```
+
+You can use them after installing the required dependencies. If they do not work, run the manual backend and frontend commands from the quick start section.
+
+## Live Capture Notes
+
+Live capture may not work immediately on every machine because packet sniffing depends on system permissions and packet capture drivers.
+
+On Windows:
+
+* Install Npcap.
+* Restart the machine after installing Npcap.
+* Run VS Code, CMD, or PowerShell as Administrator.
+* Select the correct network interface from the application.
+
+On Linux:
+
+* Install libpcap.
+* Run with suitable capture permissions or use `sudo` if needed.
+
+## TLS Analysis Notes
+
+TLS analysis requires Wireshark/tshark to be installed. Make sure `tshark` is available from the system PATH.
+
+To check if `tshark` is available, run:
+
+```powershell
+tshark -v
+```
+
+If the command is not recognized, install Wireshark and enable the option that adds tshark to the system PATH.
+
+## Troubleshooting
+
+### Backend does not start
+
+Make sure the virtual environment is activated and dependencies are installed:
+
+```powershell
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+python UI.py
+```
+
+### Frontend does not start
+
+Make sure Node.js and npm are installed, then run:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+### Frontend cannot connect to backend
+
+Make sure the Flask backend is running on:
+
+```text
+http://127.0.0.1:8000
+```
+
+Then restart the frontend:
+
+```powershell
+cd frontend
+npm run dev
+```
+
+### Live capture does not start on Windows
+
+Make sure Npcap is installed and run the terminal or VS Code as Administrator. Packet capture on Windows usually requires elevated privileges.
+
+### No network interfaces appear
+
+Restart the machine after installing Npcap. If the problem continues, reinstall Npcap and enable WinPcap API-compatible mode during installation.
+
+### TLS analysis does not work
+
+Install Wireshark and make sure `tshark` is available from the system PATH.
+
+### Database file is missing
+
+This is normal in a fresh clone. The database file is generated automatically when the backend starts:
+
+```text
+DB/IDS.db
+```
+
+### Default rules are missing from the database
+
+Start the backend once. If the `rules` table is empty, the application loads the default rules from:
+
+```text
+Rules/default_rules.json
+```
+
+## Git Ignore Policy
+
+The following files and folders are intentionally not committed to GitHub:
+
+* `.venv/`
+* `__pycache__/`
+* `node_modules/`
+* frontend build output
+* local SQLite database files
+* uploaded runtime files
+* generated logs
+* temporary outputs
+* generated model outputs
+
+This keeps the repository clean and allows every user to create their own local runtime environment after cloning the project.
+
+## Recommended Fresh Clone Test
+
+Before submitting or presenting the project, test it in a new folder:
+
+```powershell
+cd C:\Users\Dell\Desktop
+git clone https://github.com/Mazen2004212/Holmes-IDS-Helwan.git Holmes-test-clone
+cd Holmes-test-clone
+python -m venv .venv
+.\.venv\Scripts\activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python UI.py
+```
+
+Then open a second terminal:
+
+```powershell
+cd C:\Users\Dell\Desktop\Holmes-test-clone\frontend
+npm install
+npm run dev
+```
+
+If the backend, frontend, login, CSV upload, PCAP upload, and basic dashboard pages work in this fresh clone, the repository is ready for another user or examiner to run.
+
 ## Notes
 
-- Live capture may require Administrator privileges on Windows.
-- Install Npcap on Windows before using live capture.
-- TLS decryption requires Wireshark/tshark to be installed and available on the system.
-- The local database, uploaded files, logs, virtual environment, frontend build output, and generated model outputs are intentionally ignored by Git.
+* Live capture may require Administrator privileges on Windows.
+* Install Npcap on Windows before using live capture.
+* TLS decryption requires Wireshark/tshark to be installed and available on the system.
+* The local database, uploaded files, logs, virtual environment, frontend build output, and generated model outputs are intentionally ignored by Git.
+* The default login is only for development/demo use. Change the default credentials before any real deployment.
