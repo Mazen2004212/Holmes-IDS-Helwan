@@ -1,65 +1,147 @@
 # HOLMES IDS
 
-Hybrid Online Learning Model for Enhanced Security.
+**Hybrid Online Learning Model for Enhanced Security**
 
-HOLMES IDS is a hybrid Intrusion Detection System that combines signature-based detection, anomaly-based machine learning detection, live packet capture, explainability, continual learning, and analytics in one web application.
+HOLMES IDS is a hybrid Intrusion Detection System graduation project that combines signature-based detection, anomaly-based machine learning, explainability, continual learning, dashboard analytics, and role-based access control in one web application.
 
-## Main Features
+> **Graduation Project Note**
+> This repository is my graduation project for Capital University, Faculty of Computers and Artificial Intelligence, Medical Informatics Department. It is an academic prototype for IDS research, experimentation, and demonstration. It is not presented as an enterprise production security platform.
 
-* Signature-based IDS using custom rules for known attack patterns.
-* Anomaly-based IDS using a trained stacking classifier and Isolation Forest.
-* Live capture with Scapy, selectable network interface, signature checks, and flow-based anomaly detection.
-* CSV upload for batch anomaly prediction.
-* PCAP upload for signature detection and optional TLS analysis through `tshark`.
-* SHAP/LIME explainability for anomaly alerts.
-* Continual learning dashboard for reviewing captured samples, relabeling, retraining, and model promotion.
-* Analytics query builder for alerts, logs, rules, users, and training data.
-* React + Vite frontend with Flask JSON API backend.
-* Authentication and role-based access control.
+![HOLMES IDS home page](docs/screenshots/home-page.png)
 
-## Fresh Clone Quick Start
+## Project Scope
 
-These steps are for a new user downloading the project from GitHub.
+HOLMES IDS was built to explore a practical hybrid IDS workflow:
+
+- Detect known attacks with signature rules.
+- Detect behavioral anomalies with trained machine learning models.
+- Analyze uploaded CSV flow records and PCAP files.
+- Monitor live traffic when packet capture drivers and permissions are available.
+- Explain anomaly alerts using SHAP/LIME-style feature contribution views.
+- Support human-in-the-loop continual learning with labels, retraining, promotion, and rollback.
+- Provide analyst dashboards for alerts, rules, analytics, users, and retraining data.
+
+## Key Features
+
+| Area | What HOLMES IDS Provides |
+| --- | --- |
+| Signature IDS | Rule-based matching for known attack patterns using bundled default rules. |
+| Anomaly IDS | Flow-based anomaly prediction using trained models, scaler, label encoder, and feature order files. |
+| CSV Analysis | Batch prediction for uploaded CSV samples. |
+| PCAP Analysis | Signature detection for uploaded packet capture files, with optional TLS metadata support through `tshark`. |
+| Live Capture | Interface selection, capture start/stop controls, signature checks, anomaly checks, and alert storage. |
+| Explainability | Alert explanation views for stored anomaly alert features. |
+| Continual Learning | Human labels, candidate retraining, model evaluation, model promotion, and rollback support. |
+| Analytics | Query builder for alerts, logs, rules, users, and training data. |
+| Security Controls | Authentication, session handling, CSRF-aware API flow, and role-based access control. |
+
+## Corrected Evaluation Summary
+
+The dissertation and defense materials use the following corrected Chapter 4 values:
+
+| Metric | Result |
+| --- | ---: |
+| Stacking Classifier accuracy | 92.74% |
+| Stacking Classifier precision | 92.74% |
+| Stacking Classifier recall | 92.74% |
+| Stacking Classifier F1-score | 92.74% |
+| Full hybrid pipeline accuracy | 94.40% |
+| Full hybrid pipeline precision | 92.74% |
+| Full hybrid pipeline recall | 92.85% |
+| Full hybrid pipeline F1-score | 92.02% |
+| Benign false positive rate | approximately 7.65% |
+| Simulated out-of-distribution detection | 92 / 100 samples detected |
+
+These results describe the project evaluation setup and should not be interpreted as guaranteed zero-day detection or production readiness.
+
+## Architecture Overview
+
+```text
+React + Vite Frontend
+        |
+        | /api/*
+        v
+Flask Backend
+        |
+        +-- Authentication and RBAC
+        +-- Signature Detection Engine
+        +-- Anomaly Detection Engine
+        +-- Live Capture Service
+        +-- Explainability Module
+        +-- Continual Learning Module
+        +-- Analytics Query Engine
+        |
+        v
+SQLite Database + Model Artifacts + Rule Files
+```
+
+## Repository Structure
+
+```text
+Holmes-IDS-Helwan/
+├── frontend/                  React + Vite web interface
+├── tests/                     pytest test suite
+├── Rules/                     bundled default signature rules
+├── Models/                    trained models, scaler, encoders, feature order, and datasets
+├── DB/                        local SQLite database folder
+├── uploads/                   runtime upload folder
+├── docs/screenshots/          README screenshots
+├── UML/                       original UML/design assets
+├── UI.py                      Flask backend entry point
+├── api_auth.py                authentication API routes
+├── api_routes.py              main JSON API routes
+├── auth.py                    users, roles, password hashing, access control
+├── DB.py                      SQLite connection and table creation
+├── signature_IDS.py           signature detection engine
+├── anomaly_IDS.py             anomaly detection engine
+├── live_capture.py            live packet capture workflow
+├── explainability.py          alert explanation support
+├── continual_learning.py      relabeling, retraining, promotion, rollback
+├── analytics.py               analytics query builder
+├── requirements.txt           Python dependencies
+├── start_backend.bat          Windows backend launcher
+└── start_frontend.bat         Windows frontend launcher
+```
 
 ## Requirements
 
-Install these first:
+- Python 3.10 recommended
+- Node.js 18 or newer
+- npm
+- Npcap on Windows, or libpcap on Linux, for live capture
+- Wireshark/tshark only if TLS analysis is needed
 
-* Python 3.10 recommended
-* Node.js 18 or newer
-* npm
-* Npcap on Windows, or libpcap on Linux, for live capture
-* Wireshark/tshark only if TLS decryption features are needed
+## Fresh Clone Quick Start
 
-## 1. Clone The Repository
+Clone the repository:
 
 ```powershell
 git clone https://github.com/Mazen2004212/Holmes-IDS-Helwan.git
 cd Holmes-IDS-Helwan
 ```
 
-## 2. Create And Activate Python Virtual Environment
+Create and activate a virtual environment:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\activate
 ```
 
-If PowerShell blocks activation, run:
+If PowerShell blocks activation:
 
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 .\.venv\Scripts\activate
 ```
 
-## 3. Install Backend Requirements
+Install backend dependencies:
 
 ```powershell
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-## 4. Start The Backend
+Start the backend:
 
 ```powershell
 python UI.py
@@ -71,296 +153,102 @@ The backend runs on:
 http://127.0.0.1:8000
 ```
 
-On first startup, the app creates `DB/IDS.db`, creates all required tables, and creates the default admin account.
+Start the frontend in a second terminal:
 
-Default login:
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend is configured for:
+
+```text
+http://127.0.0.1:5174
+```
+
+## Default Demo Login
 
 ```text
 username: admin
 password: admin
 ```
 
-## 5. Start The Frontend
+The default account is for local academic/demo use only. Change it before any real deployment or public demonstration environment.
 
-Open a second terminal from the project root:
+## Common Workflows
 
-```powershell
-cd frontend
-npm install
-npm run dev
-```
-
-Open the Vite URL shown in the terminal. The project is configured to use:
-
-```text
-http://127.0.0.1:5174
-```
-
-The frontend proxies `/api/*` requests to the Flask backend on port `8000`, so both backend and frontend must be running at the same time.
-
-## Running Without A Virtual Environment
-
-It is possible, but not recommended:
-
-```powershell
-pip install -r requirements.txt
-python UI.py
-```
-
-Using a virtual environment is safer because this project depends on specific versions of Flask, scikit-learn, CatBoost, SHAP, LIME, Scapy, pandas, and NumPy.
-
-## Project Structure
-
-```text
-Holmes-IDS-Helwan/
-├── DB/                         # Runtime SQLite database folder
-├── Models/                     # Trained models, scaler, encoders, feature order, datasets
-│   ├── Models/                 # Trained ML models such as stacking classifier and Isolation Forest
-│   ├── Scaler/                 # MinMax scaler used by the ML pipeline
-│   ├── Label Encoder/          # Label encoders used for prediction labels
-│   ├── Features_Order/         # Feature order used by the ML pipeline
-│   ├── Dt/                     # CIC-IDS-2017 dataset files used by evaluation/retraining
-│   ├── ML/                     # Additional model/training files
-│   └── test/                   # Small test/evaluation CSV files
-├── frontend/                   # React + Vite frontend
-│   ├── src/api/                # API client
-│   ├── src/components/         # Shared UI components
-│   ├── src/context/            # Authentication context
-│   ├── src/pages/              # Main application pages
-│   └── vite.config.js          # Dev server and API proxy config
-├── tests/                      # pytest test suite
-├── Rules/                      # Bundled default signature rules for fresh databases
-├── uploads/                    # Runtime upload folder
-├── tools/                      # Utility scripts
-├── UML/                        # UML diagrams and design assets
-├── UI.py                       # Flask backend entry point
-├── api_auth.py                 # Authentication API routes
-├── api_routes.py               # Main JSON API routes
-├── app_state.py                # Shared app paths, model state, and runtime state
-├── DB.py                       # SQLite connection and table creation
-├── auth.py                     # Users, roles, password hashing, and access control
-├── signature_IDS.py            # Signature detection engine
-├── anomaly_IDS.py              # ML anomaly detection engine
-├── live_capture.py             # Live packet capture and detection loop
-├── flow.py                     # Flow feature extraction
-├── packet.py                   # Packet parsing and normalization
-├── rule.py                     # Signature rule object and matching logic
-├── RuleProcessor.py            # Rule loading/parsing helper
-├── explainability.py           # SHAP/LIME alert explanations
-├── continual_learning.py       # Relabeling, retraining, promotion, and rollback
-├── analytics.py                # Analytics query builder engine
-├── tls_decrypt.py              # TLS metadata/decryption helper using tshark
-├── requirements.txt            # Python dependencies
-├── requirements-runtime.txt    # Runtime dependency list
-├── package-lock.json           # Root package lock if used by tools
-├── skills-lock.json            # Installed AI agent skills lock file
-├── start_backend.bat           # Windows backend launcher
-└── start_frontend.bat          # Windows frontend launcher
-```
-
-## Backend Data Flow
-
-1. `UI.py` starts Flask and loads the trained models, scaler, label encoder, and feature order.
-2. `DB.py` opens `DB/IDS.db` and creates missing tables.
-3. If the `rules` table is empty, `RuleProcessor.py` loads bundled rules from `Rules/default_rules.json`.
-4. `auth.py` creates the default `admin/admin` user if no users exist.
-5. The React frontend calls Flask through `/api/*`.
-6. Signature detection uses `signature_IDS.py`, `rule.py`, and `packet.py`.
-7. Anomaly detection uses `anomaly_IDS.py`, `flow.py`, the scaler, the Isolation Forest, the stacking classifier, and the label encoder.
-8. Live capture uses `live_capture.py` to sniff packets, build flows, run signature checks, run anomaly checks, and store alerts/logs in SQLite.
-9. Explainability uses `explainability.py` to generate SHAP/LIME details for stored anomaly alert features.
-10. Continual learning uses `continual_learning.py` to store flow samples, accept human labels, retrain candidate models, evaluate them, and promote or rollback models.
-
-## Database
-
-The SQLite database file is not committed to GitHub:
-
-```text
-DB/IDS.db
-```
-
-It is generated locally on first backend startup. The following runtime tables are created automatically:
-
-* `rules`
-* `logs`
-* `alerts`
-* `users`
-* `alert_features`
-* `training_data`
-* `retrain_jobs`
-
-The runtime database is not committed, but the default signature rules are committed in:
-
-```text
-Rules/default_rules.json
-```
-
-On first backend startup, those rules are inserted automatically if the `rules` table is empty. This allows signature-based detection, PCAP signature analysis, and live capture to work after a fresh clone.
-
-## Default Ports
-
-```text
-Backend:  http://127.0.0.1:8000
-Frontend: http://127.0.0.1:5174
-```
+| Workflow | Route |
+| --- | --- |
+| Signature dashboard | `/` |
+| Anomaly dashboard | `/anomaly` |
+| CSV anomaly detection | `/csv` |
+| PCAP signature detection | `/upload_pcap` |
+| Live capture | `/live` |
+| Rules dashboard | `/rules` |
+| Analytics query builder | `/analytics` |
+| Continual learning | `/retrain` |
+| User management | `/admin` |
 
 ## Running Tests
 
-Activate the virtual environment first, then run:
+After activating the Python environment:
 
 ```powershell
 python -m pytest tests -v
 ```
 
-## Windows Batch Launchers
-
-The project includes Windows launcher files:
-
-```text
-start_backend.bat
-start_frontend.bat
-```
-
-You can use them after installing the required dependencies. If they do not work, run the manual backend and frontend commands from the quick start section.
-
 ## Live Capture Notes
 
-Live capture may not work immediately on every machine because packet sniffing depends on system permissions and packet capture drivers.
+Live packet capture depends on operating system drivers and permissions.
 
 On Windows:
 
-* Install Npcap.
-* Restart the machine after installing Npcap.
-* Run VS Code, CMD, or PowerShell as Administrator.
-* Select the correct network interface from the application.
+- Install Npcap.
+- Restart the machine after installation.
+- Run the terminal, VS Code, or PowerShell as Administrator.
+- Select the correct network interface inside the application.
 
 On Linux:
 
-* Install libpcap.
-* Run with suitable capture permissions or use `sudo` if needed.
+- Install libpcap.
+- Run with suitable packet capture permissions, or use `sudo` when required.
 
 ## TLS Analysis Notes
 
-TLS analysis requires Wireshark/tshark to be installed. Make sure `tshark` is available from the system PATH.
+TLS-related PCAP functionality requires Wireshark/tshark to be installed and available from the system `PATH`.
 
-To check if `tshark` is available, run:
+Check availability with:
 
 ```powershell
 tshark -v
 ```
 
-If the command is not recognized, install Wireshark and enable the option that adds tshark to the system PATH.
-
 ## Troubleshooting
 
-### Backend does not start
+| Problem | Fix |
+| --- | --- |
+| Backend does not start | Activate `.venv`, install `requirements.txt`, then run `python UI.py`. |
+| Frontend does not start | Run `npm install` inside `frontend/`, then `npm run dev`. |
+| Frontend cannot call APIs | Make sure the backend is running on `http://127.0.0.1:8000`. |
+| Live capture stops immediately on Windows | Install Npcap, restart Windows, and run the terminal as Administrator. |
+| No capture interfaces appear | Reinstall Npcap and enable WinPcap API-compatible mode if needed. |
+| TLS analysis fails | Install Wireshark and confirm `tshark -v` works. |
+| Database is missing | Start the backend once. `DB/IDS.db` is created locally. |
 
-Make sure the virtual environment is activated and dependencies are installed:
+## Git Hygiene
 
-```powershell
-.\.venv\Scripts\activate
-pip install -r requirements.txt
-python UI.py
-```
+The project should not commit local runtime files such as:
 
-### Frontend does not start
+- `.venv/`
+- `node_modules/`
+- `__pycache__/`
+- local `.env` files
+- generated frontend builds
+- local logs
+- runtime uploads
+- local SQLite runtime databases
 
-Make sure Node.js and npm are installed, then run:
+## Academic Disclaimer
 
-```powershell
-cd frontend
-npm install
-npm run dev
-```
-
-### Frontend cannot connect to backend
-
-Make sure the Flask backend is running on:
-
-```text
-http://127.0.0.1:8000
-```
-
-Then restart the frontend:
-
-```powershell
-cd frontend
-npm run dev
-```
-
-### Live capture does not start on Windows
-
-Make sure Npcap is installed and run the terminal or VS Code as Administrator. Packet capture on Windows usually requires elevated privileges.
-
-### No network interfaces appear
-
-Restart the machine after installing Npcap. If the problem continues, reinstall Npcap and enable WinPcap API-compatible mode during installation.
-
-### TLS analysis does not work
-
-Install Wireshark and make sure `tshark` is available from the system PATH.
-
-### Database file is missing
-
-This is normal in a fresh clone. The database file is generated automatically when the backend starts:
-
-```text
-DB/IDS.db
-```
-
-### Default rules are missing from the database
-
-Start the backend once. If the `rules` table is empty, the application loads the default rules from:
-
-```text
-Rules/default_rules.json
-```
-
-## Git Ignore Policy
-
-The following files and folders are intentionally not committed to GitHub:
-
-* `.venv/`
-* `__pycache__/`
-* `node_modules/`
-* frontend build output
-* local SQLite database files
-* uploaded runtime files
-* generated logs
-* temporary outputs
-* generated model outputs
-
-This keeps the repository clean and allows every user to create their own local runtime environment after cloning the project.
-
-## Recommended Fresh Clone Test
-
-Before submitting or presenting the project, test it in a new folder:
-
-```powershell
-cd C:\Users\Dell\Desktop
-git clone https://github.com/Mazen2004212/Holmes-IDS-Helwan.git Holmes-test-clone
-cd Holmes-test-clone
-python -m venv .venv
-.\.venv\Scripts\activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-python UI.py
-```
-
-Then open a second terminal:
-
-```powershell
-cd C:\Users\Dell\Desktop\Holmes-test-clone\frontend
-npm install
-npm run dev
-```
-
-If the backend, frontend, login, CSV upload, PCAP upload, and basic dashboard pages work in this fresh clone, the repository is ready for another user or examiner to run.
-
-## Notes
-
-* Live capture may require Administrator privileges on Windows.
-* Install Npcap on Windows before using live capture.
-* TLS decryption requires Wireshark/tshark to be installed and available on the system.
-* The local database, uploaded files, logs, virtual environment, frontend build output, and generated model outputs are intentionally ignored by Git.
-* The default login is only for development/demo use. Change the default credentials before any real deployment.
+HOLMES IDS is a graduation project prototype. It is designed for academic demonstration, controlled experiments, and IDS workflow exploration. It should be hardened, audited, tested on broader datasets, and deployed with secure operational controls before any real-world security use.
